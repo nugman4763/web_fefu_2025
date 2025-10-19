@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Профиль студента</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        nav a { margin-right: 20px; text-decoration: none; color: #007bff; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .student-info { background: #f8f9fa; padding: 20px; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav>
+            <a href="/">Главная</a>
+            <a href="/about/">О нас</a>
+        </nav>
+        <h1>Профиль студента</h1>
+        <div class="student-info">
+            <p><strong>ID студента:</strong> {{ student_id }}</p>
+            <p><strong>Имя:</strong> {{ student_name }}</p>
+            <p><strong>Группа:</strong> {{ student_group }}</p>
+        </div>
+        <p><a href="/">Вернуться на главную</a></p>
+    </div>
+</body>
+</html>
