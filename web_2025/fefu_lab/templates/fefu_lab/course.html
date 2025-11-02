@@ -1,28 +1,22 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Информация о курсе</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 40px; }
-        nav a { margin-right: 20px; text-decoration: none; color: #007bff; }
-        .container { max-width: 800px; margin: 0 auto; }
-        .course-info { background: #f8f9fa; padding: 20px; border-radius: 5px; }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <nav>
-            <a href="/">Главная</a>
-            <a href="/about/">О нас</a>
-        </nav>
-        <h1>Информация о курсе</h1>
-        <div class="course-info">
-            <p><strong>Slug курса:</strong> {{ course_slug }}</p>
-            <p><strong>Название:</strong> {{ course_title }}</p>
-            <p><strong>Описание:</strong> {{ course_description }}</p>
-            <p><strong>Продолжительность:</strong> {{ course_duration }}</p>
-        </div>
-        <p><a href="/">Вернуться на главную</a></p>
-    </div>
-</body>
-</html>
+{% extends "fefu_lab/base.html" %}
+
+{% block title %}{{ course_name }}{% endblock %}
+{% block heading %}{{ course_name }}{% endblock %}
+
+{% block content %}
+<div class="course-info">
+    <p><strong>Уровень:</strong> {{ level }}</p>
+    <p><strong>Продолжительность:</strong> {{ duration }} часов</p>
+    <p><strong>Преподаватель:</strong> {{ instructor }}</p>
+    <p><strong>Описание:</strong> {{ description }}</p>
+</div>
+
+<div style="margin-top: 20px;">
+    <h3>Другие курсы:</h3>
+    <ul>
+        <li><a href="/course/python-basics/">Основы программирования на Python</a></li>
+        <li><a href="/course/web-security/">Веб-безопасность</a></li>
+        <li><a href="/course/network-defense/">Защита сетей</a></li>
+    </ul>
+</div>
+{% endblock %}

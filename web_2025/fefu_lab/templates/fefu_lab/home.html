@@ -1,33 +1,22 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Главная страница</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 40px; }
-        nav a { margin-right: 20px; text-decoration: none; color: #007bff; }
-        .container { max-width: 800px; margin: 0 auto; }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <nav>
-            <a href="/">Главная</a>
-            <a href="/about/">О нас</a>
-        </nav>
-        <h1>Добро пожаловать на главную страницу!</h1>
-        <p>Это веб-приложение создано в рамках лабораторной работы по Django.</p>
-        
-        <h2>Доступные маршруты:</h2>
-        <ul>
-            <li><a href="/">Главная страница</a></li>
-            <li><a href="/about/">О нас</a></li>
-            <li><a href="/student/1/">Профиль студента 1</a></li>
-            <li><a href="/student/2/">Профиль студента 2</a></li>
-            <li><a href="/student/3/">Профиль студента 3</a></li>
-            <li><a href="/course/web-development/">Курс: Веб-разработка</a></li>
-            <li><a href="/course/python-basics/">Курс: Основы Python</a></li>
-            <li><a href="/course/databases/">Курс: Базы данных</a></li>
-        </ul>
-    </div>
-</body>
-</html>
+{% extends "fefu_lab/base.html" %}
+
+{% block title %}Главная страница{% endblock %}
+{% block heading %}Добро пожаловать на главную страницу!{% endblock %}
+
+{% block content %}
+<p>Это веб-приложение создано в рамках лабораторной работы по Django.</p>
+
+<h2>Доступные маршруты:</h2>
+<ul>
+    <li><a href="/">Главная страница</a></li>
+    <li><a href="/about/">О нас</a></li>
+    <li><a href="/feedback/">Обратная связь</a></li>
+    <li><a href="/register/">Регистрация</a></li>
+    <li><a href="/student/1/">Профиль студента 1</a></li>
+    <li><a href="/student/2/">Профиль студента 2</a></li>
+    <li><a href="/student/3/">Профиль студента 3</a></li>
+    <li><a href="/course/python-basics/">Курс: Python Basics</a></li>
+    <li><a href="/course/web-security/">Курс: Web Security</a></li>
+    <li><a href="/course/network-defense/">Курс: Network Defense</a></li>
+</ul>
+{% endblock %}

@@ -1,6 +1,55 @@
 from django.http import HttpResponse, Http404
 from django.shortcuts import render
 from django.views import View
+from .forms import FeedbackForm, RegistrationForm
+from .models import UserProfile
+
+# Данные студентов
+STUDENTS_DATA = {
+    1: {
+        'info': 'Иван Петров',
+        'faculty': 'Кибербезопасность',
+        'status': 'Активный',
+        'year': 3
+    },
+    2: {
+        'info': 'Мария Сидорова', 
+        'faculty': 'Информатика',
+        'status': 'Активный',
+        'year': 2
+    },
+    3: {
+        'info': 'Алексей Козлов',
+        'faculty': 'Программная инженерия', 
+        'status': 'Выпускник',
+        'year': 5
+    }
+}
+
+# Данные курсов
+COURSES_DATA = {
+    'python-basics': {
+        'name': 'Основы программирования на Python',
+        'duration': 36,
+        'description': 'Базовый курс по программированию на языке Python для начинающих.',
+        'instructor': 'Доцент Петров И.С.',
+        'level': 'Начальный'
+    },
+    'web-security': {
+        'name': 'Веб-безопасность',
+        'duration': 48,
+        'description': 'Курс по защите веб-приложений от современных угроз.',
+        'instructor': 'Профессор Сидоров А.В.',
+        'level': 'Продвинутый'
+    },
+    'network-defense': {
+        'name': 'Защита сетей',
+        'duration': 42,
+        'description': 'Изучение методов и технологий защиты компьютерных сетей.',
+        'instructor': 'Доцент Козлова М.П.',
+        'level': 'Средний'
+    }
+}
 
 # Function-Based Views
 def home_page(request):
@@ -12,61 +61,76 @@ def about_page(request):
     return render(request, 'fefu_lab/about.html')
 
 def student_profile(request, student_id):
-    """Профиль студента"""
-    # Пример данных студентов
-    students = {
-        1: {"name": "Иван Иванов", "group": "Б9120-01.03.02пр"},
-        2: {"name": "Петр Петров", "group": "Б9120-01.03.02пр"},
-        3: {"name": "Мария Сидорова", "group": "Б9121-01.03.02пр"},
-    }
-    
-    student = students.get(student_id)
-    if not student:
-        raise Http404("Студент не найден")
-    
-    context = {
-        'student_id': student_id,
-        'student_name': student['name'],
-        'student_group': student['group']
-    }
-    return render(request, 'fefu_lab/student.html', context)
+    if student_id in STUDENTS_DATA:
+        student_data = STUDENTS_DATA[student_id]
+        return render(request, 'fefu_lab/student_profile.html', {
+            'student_id': student_id,
+            'student_info': student_data['info'],
+            'faculty': student_data['faculty'],
+            'status': student_data['status'],
+            'year': student_data['year']
+        })
+    else:
+        raise Http404("Студент с таким ID не найден")
+
 
 # Class-Based View
 class CourseView(View):
-    """Информация о курсе"""
-    
     def get(self, request, course_slug):
-        # Пример данных курсов
-        courses = {
-            'web-development': {
-                'title': 'Веб-разработка',
-                'description': 'Курс по основам веб-разработки на Django',
-                'duration': '1 семестр'
-            },
-            'python-basics': {
-                'title': 'Основы Python',
-                'description': 'Введение в программирование на Python',
-                'duration': '1 семестр'
-            },
-            'databases': {
-                'title': 'Базы данных',
-                'description': 'Изучение реляционных баз данных и SQL',
-                'duration': '1 семестр'
-            }
-        }
-        
-        course = courses.get(course_slug)
-        if not course:
+        if course_slug in COURSES_DATA:
+            course_data = COURSES_DATA[course_slug]
+            return render(request, 'fefu_lab/course.html', {
+                'course_slug': course_slug,
+                'course_name': course_data['name'],
+                'duration': course_data['duration'],
+                'description': course_data['description'],
+                'instructor': course_data['instructor'],
+                'level': course_data['level']
+            })
+        else:
             raise Http404("Курс не найден")
-        
-        context = {
-            'course_slug': course_slug,
-            'course_title': course['title'],
-            'course_description': course['description'],
-            'course_duration': course['duration']
-        }
-        return render(request, 'fefu_lab/course.html', context)
 
 def handler404(request, exception):
     """Обработчик для несуществующих страниц"""
     return render(request, 'fefu_lab/404.html', status=404)
+
+def feedback_view(request):
+    if request.method == 'POST':
+        form = FeedbackForm(request.POST)
+        if form.is_valid():
+            # В реальном приложении здесь была бы отправка email или сохранение в БД
+            return render(request, 'fefu_lab/success.html', {
+                'message': 'Спасибо за ваше сообщение! Мы свяжемся с вами в ближайшее время.',
+                'title': 'Обратная связь'
+            })
+    else:
+        form = FeedbackForm()
+    
+    return render(request, 'fefu_lab/feedback.html', {
+        'form': form,
+        'title': 'Обратная связь'
+    })
+
+def register_view(request):
+    if request.method == 'POST':
+        form = RegistrationForm(request.POST)
+        if form.is_valid():
+            # Сохраняем пользователя в БД
+            user = UserProfile(
+                username=form.cleaned_data['username'],
+                email=form.cleaned_data['email'],
+                password=form.cleaned_data['password']  # В реальном приложении пароль нужно хэшировать!
+            )
+            user.save()
+            
+            return render(request, 'fefu_lab/success.html', {
+                'message': 'Регистрация прошла успешно! Добро пожаловать в нашу систему.',
+                'title': 'Регистрация'
+            })
+    else:
+        form = RegistrationForm()
+    
+    return render(request, 'fefu_lab/register.html', {
+        'form': form,
+        'title': 'Регистрация'
+    })

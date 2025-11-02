@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fefu_lab - {% block title %}{% endblock %}</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'fefu_lab/css/style.css' %}">
+</head>
+<body>
+    <div class="container">
+        <nav class="navigation">
+            <a href="/">Главная</a> | 
+            <a href="/about/">О нас</a> | 
+            <a href="/feedback/">Обратная связь</a> | 
+            <a href="/register/">Регистрация</a> |
+            <a href="/student/1/">Пример студента</a> |
+            <a href="/course/python-basics/">Курс Python</a>
+        </nav>
+        
+        <h1>{% block heading %}{% endblock %}</h1>
+        
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>
